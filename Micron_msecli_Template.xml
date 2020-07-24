@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>4.4</version>
+    <date>2020-07-22T14:17:50Z</date>
+    <groups>
+        <group>
+            <name>MSECLI</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Micron_Template_Beta_v1</template>
+            <name>Micron msecli template</name>
+            <description>msecli template</description>
+            <groups>
+                <group>
+                    <name>MSECLI</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>Micron Device Status</name>
+                </application>
+                <application>
+                    <name>Micron JSON</name>
+                </application>
+            </applications>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Micron Devices</name>
+                    <key>micron.discovery</key>
+                    <delay>5m</delay>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>{#DEV_NAME} Status</name>
+                            <type>DEPENDENT</type>
+                            <key>DeviceStatus.[&quot;{#DEV_NAME}&quot;]</key>
+                            <delay>0</delay>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <applications>
+                                <application>
+                                    <name>Micron Device Status</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$.drives[:].deviceStatus</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>micron.info.[&quot;{#DEV_NAME}&quot;]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>JSON for {#DEV_NAME}</name>
+                            <key>micron.info.[&quot;{#DEV_NAME}&quot;]</key>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <applications>
+                                <application>
+                                    <name>Micron JSON</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+        </template>
+    </templates>
+</zabbix_export>
